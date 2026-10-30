@@ -66,10 +66,13 @@ def load_model_and_embeddings():
     """Loads model and maps embeddings to a 16x19 hybrid Hilbert/Serpentine grid."""
     model_id = "Qwen/Qwen2.5-0.5B-Instruct"
     tokenizer = AutoTokenizer.from_pretrained(model_id)
+    
+    # Updated: replaced deprecated torch_dtype with dtype and enabled low CPU memory footprint
     model = AutoModelForCausalLM.from_pretrained(
         model_id, 
-        torch_dtype=torch.float32, 
-        device_map="auto"
+        dtype=torch.float32, 
+        device_map="cpu",
+        low_cpu_mem_usage=True
     )
     
     # Get weight matrix: shape [vocab_size, hidden_dim]
